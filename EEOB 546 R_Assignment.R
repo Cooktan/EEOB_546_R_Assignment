@@ -41,8 +41,7 @@ view(Fang_genotypes)
 view(SNP_position)
 
 ### From this I learned that Fang_et_al_genotypes has a header row with Sample ID, Location information, and Group information 
-  ### along with SNP ID labels. By transforming the data we are able to produe a table
-  ### that has three headers.
+  ### along with SNP ID labels. By transforming the data we are able to produce a table  ### that has three headers.
   
 # Maize
 
@@ -62,7 +61,7 @@ view(Headerless_Transposed_ZMM_Grouped_Fang_geno)
 Headerless_Transposed_ZMM_Grouped_Fang_geno.df <- as.data.frame(Headerless_Transposed_ZMM_Grouped_Fang_geno)
 
 row_nm_tocol_Headerless= rownames_to_column(Headerless_Transposed_ZMM_Grouped_Fang_geno.df, 'SNP_ID')
-### Since the SNP ID's were set as a row name, we hd to convert it to a column, but to do so 
+### Since the SNP ID's were set as a row name, we had to convert it to a column, but to do so 
 ### we had to make it a data frame
 
 Join_SNP_Geno= right_join(SNP_position,row_nm_tocol_Headerless, by ='SNP_ID')
@@ -138,6 +137,38 @@ Chr8_Teosinte_Cleaned_Join_SNP_Geno= filter(Cleaned_ZMP_Join_SNP_Geno, Chromosom
 Chr9_Teosinte_Cleaned_Join_SNP_Geno= filter(Cleaned_ZMP_Join_SNP_Geno, Chromosome == 9)
 Chr10_Teosinte_Cleaned_Join_SNP_Geno= filter(Cleaned_ZMP_Join_SNP_Geno, Chromosome == 10)
 
+## Replace ? with -
+P = as.data.frame(lapply(Cleaned_Join_SNP_Geno, gsub, pattern="?", replacement= "-", fixed= TRUE))
+view(P)
+
+R = as.data.frame(lapply(Cleaned_ZMP_Join_SNP_Geno, gsub, pattern="?", replacement= "-", fixed= TRUE))
+view(R)
+
+#Chromosome Files for Maize- ? swapped for -
+
+Chr1_dash_maize_Cleaned_Join_SNP_Geno= filter(P, Chromosome == 1)
+Chr2_dash_maize_Cleaned_Join_SNP_Geno= filter(P, Chromosome == 2)
+Chr3_dash_maize_Cleaned_Join_SNP_Geno= filter(P, Chromosome == 3)
+Chr4_dash_maize_Cleaned_Join_SNP_Geno= filter(P, Chromosome == 4)
+Chr5_dash_maize_Cleaned_Join_SNP_Geno= filter(P, Chromosome == 5)
+Chr6_dash_maize_Cleaned_Join_SNP_Geno= filter(P, Chromosome == 6)
+Chr7_dash_maize_Cleaned_Join_SNP_Geno= filter(P, Chromosome == 7)
+Chr8_dash_maize_Cleaned_Join_SNP_Geno= filter(P, Chromosome == 8)
+Chr9_dash_maize_Cleaned_Join_SNP_Geno= filter(P, Chromosome == 9)
+Chr10_dash_maize_Cleaned_Join_SNP_Geno= filter(P, Chromosome == 10)
+
+#Chromosome files for Teosinte
+Chr1_dash_Teosinte_Cleaned_Join_SNP_Geno= filter(R, Chromosome == 1)
+Chr2_dash_Teosinte_Cleaned_Join_SNP_Geno= filter(R, Chromosome == 2)
+Chr3_dash_Teosinte_Cleaned_Join_SNP_Geno= filter(R, Chromosome == 3)
+Chr4_dash_Teosinte_Cleaned_Join_SNP_Geno= filter(R, Chromosome == 4)
+Chr5_dash_Teosinte_Cleaned_Join_SNP_Geno= filter(R, Chromosome == 5)
+Chr6_dash_Teosinte_Cleaned_Join_SNP_Geno= filter(R, Chromosome == 6)
+Chr7_dash_Teosinte_Cleaned_Join_SNP_Geno= filter(R, Chromosome == 7)
+Chr8_dash_Teosinte_Cleaned_Join_SNP_Geno= filter(R, Chromosome == 8)
+Chr9_dash_Teosinte_Cleaned_Join_SNP_Geno= filter(R, Chromosome == 9)
+Chr10_dash_Teosinte_Cleaned_Join_SNP_Geno= filter(R, Chromosome == 10)
+
 
 #Visualization
 
@@ -151,7 +182,34 @@ ggplot(ZMM_SNPS_Per_Chrom, aes(x=as.factor(Var.1), y=value))+ geom_bar(stat='ide
 ZMP_SNPS_Per_Chrom <- table(Cleaned_ZMP_Join_SNP_Geno$Chromosome)
 ZMP_SNPS_Per_Chrom<- melt(ZMP_SNPS_Per_Chrom)
 ggplot(ZMP_SNPS_Per_Chrom, aes(x=as.factor(Var.1), y=value))+ geom_bar(stat='identity')
+### Confirmation that they should have the same number
 
-### Confirmation that they should ahve the same number
+## Distribution of SNP'S on Chromosomes-Maize
 
-ggplot(data = Cleaned_ZMP_Join_SNP_Geno) +geom_point (mapping=aes(x =SNP_IDs)) 
+ggplot(data = Cleaned_Join_SNP_Geno) + geom_point(mapping = aes(x=Position, y=Chromosome))
+
+## Distribution of SNP'S on Chromosomes-Teosinte
+
+ggplot(data = Cleaned_ZMP_Join_SNP_Geno) + geom_point(mapping = aes(x=Position, y=Chromosome))
+
+## New Column
+New_Teosinte_Col= if (Cleaned_Join_SNP_Geno[1:987]== "A/A" | "C/C" | "G/G" | "T/T")
+New_Teosinte_Col=Cleaned_Join_SNP_Geno$Zygosity
+Cleaned_Join_SNP_Geno$Zygosity= c(1:989){Cleaned_Join_SNP_Geno[c(3:989)== "A/A" | "C/C" | "G/G" | "T/T"]== "HM"
+
+  New_Column_Maize = as.data.frame(lapply(Cleaned_Join_SNP_Geno, gsub, pattern="A/A"| "G/G" | "T/T"| "C/C", replacement= "HM", fixed= TRUE))
+  view(New_Column_Maize)
+  
+  Cleaned_Join_SNP_Geno$Zygosity <-ifelse(Cleaned_Join_SNP_Geno[c(3:983)]=="A/A" | "C/C" | "G/G" | "T/T", "1","0") 
+  
+  ## My own Visualization 
+### Amplicons per chromosome-Maize
+
+barplot(tapply(Join_SNP_Geno$count_amplicons, format(Join_SNP_Geno$Chromosome), FUN=sum))
+
+### Amplicons per chromosome-Teosinte
+
+barplot(tapply(Join_ZMP_SNP_Geno$count_amplicons, format(Join_SNP_Geno$Chromosome), FUN=sum))
+
+
+
