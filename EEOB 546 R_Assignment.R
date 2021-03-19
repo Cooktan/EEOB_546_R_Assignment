@@ -92,13 +92,6 @@ Chr10_Maize_Cleaned_Join_SNP_Geno= filter(Cleaned_Join_SNP_Geno, Chromosome == 1
 
 
 
-
-Chr1_Maize_Cleaned_Join_SNP_Geno$V1-V1573 <- as.character (Chr1_Maize_Cleaned_Join_SNP_Geno$V1-V1573) 
-
-
-Chr1_Dash_Cleaned_Join_SNP_Geno= select(Chr1_Maize_Cleaned_Join_SNP_Geno, V1:V1573)%>% gsub("?", "-")
-
-
 # Teosinte
 
 ## Isolate ZMPBA, ZMPIL,ZMPJA containing Rows and then Transpose Fang_et_al_Genotype
