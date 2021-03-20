@@ -1,4 +1,6 @@
-#R_ Assignment
+
+ 
+ #R_ Assignment
 
 ### Tanner M. Cook
 ### Ph.D. Student at Iowa State University
@@ -40,8 +42,7 @@ str(SNP_position)
 view(Fang_genotypes)
 view(SNP_position)
 
-### From this I learned that Fang_et_al_genotypes has a header row with Sample ID, Location information, and Group information 
-  ### along with SNP ID labels. By transforming the data we are able to produce a table  ### that has three headers.
+### From this I learned that Fang_et_al_genotypes has a header row with Sample ID, Location information, and Group information along with SNP ID labels. By transforming the data we are able to produce a table that has three headers.
   
 # Maize
 
@@ -61,8 +62,7 @@ view(Headerless_Transposed_ZMM_Grouped_Fang_geno)
 Headerless_Transposed_ZMM_Grouped_Fang_geno.df <- as.data.frame(Headerless_Transposed_ZMM_Grouped_Fang_geno)
 
 row_nm_tocol_Headerless= rownames_to_column(Headerless_Transposed_ZMM_Grouped_Fang_geno.df, 'SNP_ID')
-### Since the SNP ID's were set as a row name, we had to convert it to a column, but to do so 
-### we had to make it a data frame
+### Since the SNP ID's were set as a row name, we had to convert it to a column, but to do so we had to make it a data frame
 
 Join_SNP_Geno= right_join(SNP_position,row_nm_tocol_Headerless, by ='SNP_ID')
 
@@ -109,13 +109,11 @@ view(Headerless_Transposed_ZMP_Grouped_Fang_geno)
 Headerless_Transposed_ZMP_Grouped_Fang_geno.df <- as.data.frame(Headerless_Transposed_ZMP_Grouped_Fang_geno)
 
 row_ZMP_nm_tocol_Headerless= rownames_to_column(Headerless_Transposed_ZMP_Grouped_Fang_geno.df, 'SNP_ID')
-### Since the SNP ID's were set as a row name, we hd to convert it to a column, but to do so 
-### we had to make it a data frame
+### Since the SNP ID's were set as a row name, we hd to convert it to a column, but to do so we had to make it a data frame
 
 Join_ZMP_SNP_Geno= right_join(SNP_position,row_ZMP_nm_tocol_Headerless, by ='SNP_ID')
 
-##Remove columns to ensure SNP_ID", the second column is "Chromosome", the third column is "Position", 
-##and subsequent columns are genotype data from either maize or teosinte individuals.
+##Remove columns to ensure SNP_ID", the second column is "Chromosome", the third column is "Position", and subsequent columns are genotype data from either maize or teosinte individuals.
 ### Assumption that genotype data means nucleotides only
 
 Cleaned_ZMP_Join_SNP_Geno = subset(Join_ZMP_SNP_Geno, select = -c(cdv_marker_id, alt_pos:count_gene))
@@ -192,22 +190,23 @@ ggplot(data = Cleaned_ZMP_Join_SNP_Geno) + geom_point(mapping = aes(x=Position, 
 
 ## New Column _Maize
  ### Provides us data on the types of differences present in nucleotide data
- Cleaned_Join_SNP_Geno$ZygosityAT <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "A/T", "HZ", "Hm")
- Cleaned_Join_SNP_Geno$ZygosityAG <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "A/G", "HZ", "Hm")
- Cleaned_Join_SNP_Geno$ZygosityAC <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "A/C", "HZ", "Hm")
- Cleaned_Join_SNP_Geno$ZygosityTA <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "T/A", "HZ", "Hm")
- Cleaned_Join_SNP_Geno$ZygosityGA <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "G/A", "HZ", "Hm")
- Cleaned_Join_SNP_Geno$ZygosityCA <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "C/A", "HZ", "Hm")
+Cleaned_Join_SNP_Geno$ZygosityAT <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "A/T", "HZ", "Hm")
+Cleaned_Join_SNP_Geno$ZygosityAG <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "A/G", "HZ", "Hm")
+Cleaned_Join_SNP_Geno$ZygosityAC <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "A/C", "HZ", "Hm")
+Cleaned_Join_SNP_Geno$ZygosityTA <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "T/A", "HZ", "Hm")
+Cleaned_Join_SNP_Geno$ZygosityGA <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "G/A", "HZ", "Hm")
+Cleaned_Join_SNP_Geno$ZygosityCA <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "C/A", "HZ", "Hm")
 Cleaned_Join_SNP_Geno$ZygosityGC <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "G/C", "HZ", "Hm")
- Cleaned_Join_SNP_Geno$ZygosityGT <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "G/T", "HZ", "Hm")
- Cleaned_Join_SNP_Geno$ZygosityCG <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "C/G", "HZ", "Hm")
- Cleaned_Join_SNP_Geno$ZygosityTG <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "T/G", "HZ", "Hm")
- Cleaned_Join_SNP_Geno$ZygosityTC <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "T/C", "HZ", "Hm")
- Cleaned_Join_SNP_Geno$ZygosityCT <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "C/T", "HZ", "Hm")
+Cleaned_Join_SNP_Geno$ZygosityGT <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "G/T", "HZ", "Hm")
+Cleaned_Join_SNP_Geno$ZygosityCG <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "C/G", "HZ", "Hm")
+Cleaned_Join_SNP_Geno$ZygosityTG <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "T/G", "HZ", "Hm")
+Cleaned_Join_SNP_Geno$ZygosityTC <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "T/C", "HZ", "Hm")
+Cleaned_Join_SNP_Geno$ZygosityCT <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "C/T", "HZ", "Hm")
 
  
- Cleaned_Join_SNP_Geno$Zygositymissing1 <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "?/*", Cleaned_Join_SNP_Geno$Chromosome, "Missing")
- Cleaned_Join_SNP_Geno$Zygositymissing2 <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "*/?", Cleaned_Join_SNP_Geno$Chromosome, "Missing")
+*Cleaned_Join_SNP_Geno$Zygositymissing1 <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "?/*", Cleaned_Join_SNP_Geno$Chromosome, "Missing")
+
+*Cleaned_Join_SNP_Geno$Zygositymissing2 <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "*/?", Cleaned_Join_SNP_Geno$Chromosome, "Missing")
  
  
  Count_HZ= count(Cleaned_Join_SNP_Geno, vars="HZ")
@@ -221,21 +220,21 @@ Cleaned_Join_SNP_Geno$ZygosityGC <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "G
  ## New Column _Teosinte
  ### Provides us data on the types of differences present in nucleotide data
 
- Cleaned_ZMP_Join_SNP_Geno$ZygosityAT <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "A/T", "HZ", "Hm")
+Cleaned_ZMP_Join_SNP_Geno$ZygosityAT <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "A/T", "HZ", "Hm")
  Cleaned_ZMP_Join_SNP_Geno$ZygosityAG <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "A/G", "HZ", "Hm")
- Cleaned_ZMP_Join_SNP_Geno$ZygosityAC <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "A/C", "HZ", "Hm")
- Cleaned_ZMP_Join_SNP_Geno$ZygosityTA <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "T/A", "HZ", "Hm")
- Cleaned_ZMP_Join_SNP_Geno$ZygosityGA <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "G/A", "HZ", "Hm")
- Cleaned_ZMP_Join_SNP_Geno$ZygosityCA <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "C/A", "HZ", "Hm")
- Cleaned_ZMP_Join_SNP_Geno$ZygosityGC <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "G/C", "HZ", "Hm")
- Cleaned_ZMP_Join_SNP_Geno$ZygosityGT <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "G/T", "HZ", "Hm")
- Cleaned_ZMP_Join_SNP_Geno$ZygosityCG <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "C/G", "HZ", "Hm")
- Cleaned_ZMP_Join_SNP_Geno$ZygosityTG <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "T/G", "HZ", "Hm")
- Cleaned_ZMP_Join_SNP_Geno$ZygosityTC <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "T/C", "HZ", "Hm")
- Cleaned_ZMP_Join_SNP_Geno$ZygosityCT <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "C/T", "HZ", "Hm")
+Cleaned_ZMP_Join_SNP_Geno$ZygosityAC <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "A/C", "HZ", "Hm")
+Cleaned_ZMP_Join_SNP_Geno$ZygosityTA <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "T/A", "HZ", "Hm")
+Cleaned_ZMP_Join_SNP_Geno$ZygosityGA <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "G/A", "HZ", "Hm")
+Cleaned_ZMP_Join_SNP_Geno$ZygosityCA <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "C/A", "HZ", "Hm")
+Cleaned_ZMP_Join_SNP_Geno$ZygosityGC <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "G/C", "HZ", "Hm")
+Cleaned_ZMP_Join_SNP_Geno$ZygosityGT <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "G/T", "HZ", "Hm")
+Cleaned_ZMP_Join_SNP_Geno$ZygosityCG <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "C/G", "HZ", "Hm")
+Cleaned_ZMP_Join_SNP_Geno$ZygosityTG <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "T/G", "HZ", "Hm")
+Cleaned_ZMP_Join_SNP_Geno$ZygosityTC <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "T/C", "HZ", "Hm")
+Cleaned_ZMP_Join_SNP_Geno$ZygosityCT <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "C/T", "HZ", "Hm")
  
- Cleaned_ZMP_Join_SNP_Geno$Zygositymissing1 <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "?/*", Cleaned_Join_SNP_Geno$Chromosome, "Missing")
- Cleaned_ZMP_Join_SNP_Geno$Zygositymissing2 <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "*/?", Cleaned_Join_SNP_Geno$Chromosome, "Missing")
+*Cleaned_ZMP_Join_SNP_Geno$Zygositymissing1 <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "?/*", Cleaned_Join_SNP_Geno$Chromosome, "Missing")
+*Cleaned_ZMP_Join_SNP_Geno$Zygositymissing2 <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "*/?", Cleaned_Join_SNP_Geno$Chromosome, "Missing")
  
  #Update
  ggplot(data = Cleaned_ZMP_Join_SNP_Geno) + geom_point(mapping=aes(y="HZ", x="HM"))
@@ -247,11 +246,11 @@ Cleaned_Join_SNP_Geno$ZygosityGC <- ifelse(Cleaned_Join_SNP_Geno[c(4:1573)]== "G
   ## My own Visualization 
 ### Amplicons per chromosome-Maize
 
-barplot(tapply(Join_SNP_Geno$count_amplicons, format(Join_SNP_Geno$Chromosome), FUN=sum))
+##barplot(tapply(Join_SNP_Geno$count_amplicons, format(Join_SNP_Geno$Chromosome), FUN=sum))
 
 ### Amplicons per chromosome-Teosinte
 
-barplot(tapply(Join_ZMP_SNP_Geno$count_amplicons, format(Join_SNP_Geno$Chromosome), FUN=sum))
+##barplot(tapply(Join_ZMP_SNP_Geno$count_amplicons, format(Join_SNP_Geno$Chromosome), FUN=sum))
 
 
 
