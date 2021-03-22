@@ -1,0 +1,20 @@
+---
+title: "Griffin_Review Cook"
+output: html_document
+---
+
+#Your comments were nice and it made it very easy to see what you were trying to do with your code 
+
+#Data inspection looked good 
+
+#All of your code ran well, no errors or warnings on my end 
+
+#line 217-219 gave an odd output for the chart. The first chart just had a single dot in the middle. The second is all nunched up on one side and hard to read. Even when I zoom into the image it is still stacked on each other or something. The last chart did the same thing for me. 
+#I don't know how to fix this (and actually had this issue with one of my charts). But I wanted to bring it to your attention.
+
+#your lines 241-243 did the same bunched up chart
+
+#your other charts all looked nice though. 
+
+#Overall good job! All the code ran on my machine and I had no errors. 
+
