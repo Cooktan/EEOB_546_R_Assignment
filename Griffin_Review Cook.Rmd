@@ -9,7 +9,7 @@ output: html_document
 
 #All of your code ran well, no errors or warnings on my end 
 
-#line 217-219 gave an odd output for the chart. The first chart just had a single dot in the middle. The second is all nunched up on one side and hard to read. Even when I zoom into the image it is still stacked on each other or something. The last chart did the same thing for me. 
+#line 217-219 gave an odd output for the chart. The first chart just had a single dot in the middle. The second is all bunched up on one side and hard to read. Even when I zoom into the image it is still stacked on each other or something. The last chart did the same thing for me. 
 #I don't know how to fix this (and actually had this issue with one of my charts). But I wanted to bring it to your attention.
 
 #your lines 241-243 did the same bunched up chart
