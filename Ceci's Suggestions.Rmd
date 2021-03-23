@@ -1,0 +1,19 @@
+---
+title: "Ceci's Suggestions"
+author: "Ceci"
+date: "3/21/2021"
+output: html_document
+---
+
+Hey Tanner,
+
+For my suggestions, I'd say to try using the R Markdown format:
+```{r}
+
+```
+
+This allows R code to be imbedded in the file itself so the workflow can be visualized easier. It can even visualize the plots you create. You can also save your plots using ggsave() and save them as .png files. The code I used on my project was:
+
+ggsave(filename = "graph_name.png", device = "png")
+
+One more thing that I noticed was the chromosome files you created weren't sorted by position. Just be sure to do that and I think you're golden :).
