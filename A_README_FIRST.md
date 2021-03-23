@@ -22,9 +22,11 @@ There are two files, "Maize" and "Teosinte", which contain chromosome files for 
 
 Reviews were done for Maggie Sodders and Dua Vang, both of which are included in the assignment. Maggie's review was sent during the weekend and Dua's was sent on Monday.
 The links:
-https://github.com/Cooktan/DV_R-Assignment
+https://github.com/Cooktan/DV_R-Assignment,
 https://github.com/Cooktan/Sodders_R
 
 Reviews for me were done by Ceci and Brianna Griffin, both of which are included.
+
+For any questions regarding this assignment, please email me at Tmcook@iastate.edu.
  
  
