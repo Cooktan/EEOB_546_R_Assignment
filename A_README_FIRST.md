@@ -21,7 +21,7 @@ The previous document sent to reviewers is called "EEOB 546 R_Assignment" with m
 There are two files, "Maize" and "Teosinte", which contain chromosome files for the data. Files with "dashed" are those files where missing data are imputed with "-" as well as organized by decreasing position values. Files that are not noted with "dash" are those files that were imputed for missing data with "?" these are organized by increasing position values.
 
 Reviews were done for Maggie Sodders and Dua Vang, both of which are included in the assignment. Maggie's review was sent during the weekend and Dua's was sent on Monday.
-The links to there's are below:
+The links:
 https://github.com/Cooktan/DV_R-Assignment
 https://github.com/Cooktan/Sodders_R
 
