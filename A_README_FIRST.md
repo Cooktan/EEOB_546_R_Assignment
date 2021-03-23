@@ -18,7 +18,7 @@ The previous document sent to reviewers is called "EEOB 546 R_Assignment" with m
 
  For this assignment, it is best to run the code from the "Revised_EEOB 546 R_Assignment.Rmd" file as it will have outputs and descriptions of what the code does. There are internal notes both describing the updates and some of the processes with the code.
  
-There are two files, "Maize" and "Teosinte", which contain chromosome files for the data. Files with "dashed" are those files where missing data are imputed with "-" as well as organized by decreasing position values. Files that are not noted with "dash" are those files that were imputed for missing data are imputed with "?" these are organized by increasing position values.
+There are two files, "Maize" and "Teosinte", which contain chromosome files for the data. Files with "dashed" are those files where missing data are imputed with "-" as well as organized by decreasing position values. Files that are not noted with "dash" are those files that were imputed for missing data with "?" these are organized by increasing position values.
 
 Reviews were done for Maggie Sodders and Dua Vang, both of which are included in the assignment.
 
