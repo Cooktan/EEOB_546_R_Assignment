@@ -1,8 +1,27 @@
 # EEOB_546_R_Assignment
+This was updated to direct the reader in a more detailed fashion. (updated 3-23-2021)
 
-## This contains the data for the R assignment.
+# Updates to the Assignment.
 
-## For this assignment, it is best to run the code from the .R file as it will have the best code. There are a couple of places in the R-Markdown that a * had to be added at the beginning. Please let me know if ou have any suggestion.
-## As I am not a proficient R user, much of the code is probably longer than needed.. The separation of HM and HZ data for proportion info was my greatest fault in this assignment. Any suggestions are greatly appreciated.
+For the original copy sent to reviewers, it was better to run the code with the .R file as the markdown was not well put together. After more online searching I was able to get a better handle on R-Markdown. The revised version of the document which was updated after being sent to the reviewers is titled, "Revised_EEOB 546 R_Assignment.Rmd". This document has updates including: 
 
-## The .R file will contain code and descriptions throughout. Additionally, the 40 files for chromosomes are within this file. For these, dash = "-" and the default name Chr_Maize or Chr_Teosinte will contain the data with "?" 
+removed "view" commands to clear up RAM when running code
+ordering chromosome files in ascending and descending order
+recounting "HM" and "HZ" occurrences and missing data accompanied also with shiny new graphs
+writing chromosome files to .CSV files instead of .TSV files.
+
+Some last minute updates to reviewers sent at 00:03 3-20-2021 include: Chromosome file creation and placing into individual "Maize" and "Teosinte" files, Minor section title updates, and a space added in a code section.
+
+The previous document sent to reviewers is called "EEOB 546 R_Assignment" with multiple extensions.
+
+# How to Manuever the repository.
+
+ For this assignment, it is best to run the code from the "Revised_EEOB 546 R_Assignment.Rmd" file as it will have outputs and descriptions of what the code does. There are internal notes both describing the updates and some of the processes with the code.
+ 
+There are two files, "Maize" and "Teosinte", which contain chromosome files for the data. Files with "dashed" are those files where missing data are imputed with "-" as well as organized by decreasing position values. Files that are not noted with "dash" are those files that were imputed for missing data are imputed with "?" these are organized by increasing position values.
+
+Reviews were done for Maggie Sodders and Dua Vang, both of which are included in the assignment.
+
+Reviews for me were done by Ceci and Brianna Griffin, both of which are included.
+ 
+ 
