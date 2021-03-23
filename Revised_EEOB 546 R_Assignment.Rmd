@@ -1,0 +1,452 @@
+---
+title: "Revised_R_Assignment Markdown"
+author: "Tanner M. Cook"
+date: "3/22/2021"
+output: html_document
+---
+
+
+#REVISED_R_ Assignment
+#Updates include: Removed some "view" commands to clear up RAM when running code, ordering chromosome files in ascending and descending order, recounting "HM" and "HZ" occurrences and missing data with shiny new graphs, writing chromosome files to .CSV files instead of .TSV files.
+
+### Tanner M. Cook
+### Ph.D. Student at Iowa State University
+#### Copyright privileges are owned by Tanner Cook and Iowa State University. For use please contact Tanner Cook (tmcook@iastate.edu)
+
+
+## This file contains code and descriptions from the R assignment in EEOB 546X.
+
+```{r}
+## Load relevant libraries, setting directory, read files 
+library("tidyverse")
+library("tidyr")
+library("ggplot2")
+```
+
+# Getting going with loading data and packages. 
+      -Note- You must have the original files in you working directory to run this code.
+
+```{r}
+
+library("reshape")
+
+setwd("C:/Users/Tanner/Desktop/Tanner/Iowa_State_Work/PhD_2020_2021/Bioinformatics_for_Biological_data/EEOB 546 R_Assignment")
+Fang_genotypes= read_tsv("fang_et_al_genotypes.txt")
+SNP_position= read_tsv("snp_position.txt")
+
+```
+
+# Inspecting Data
+
+```{r}
+head(Fang_genotypes)
+head (SNP_position)
+
+tail(Fang_genotypes)
+tail(SNP_position)
+
+dim(Fang_genotypes)
+dim (SNP_position)
+
+nrow(Fang_genotypes)
+nrow(SNP_position)
+
+str(Fang_genotypes)
+str(SNP_position)
+
+
+view(Fang_genotypes)
+view(SNP_position)
+### From this I learned that Fang_et_al_genotypes has a header row with Sample ID, Location information, and Group information along with SNP ID labels. By transforming the data we are able to produce a table that has three headers
+```
+
+ *Maize*
+
+## Isolate ZMMLR, ZMMIL,ZMMMR containing Rows and then Transpose Fang_et_al_Genotypes
+
+```{r}
+ZMM_Grouped_Fang_geno = filter(Fang_genotypes, grepl("ZMM", Group))
+
+
+Transposed_ZMM_Grouped_Fang_geno= t(ZMM_Grouped_Fang_geno)
+```
+
+## Remove the three rows of headers in Genotype data except for sample ID
+
+```{r}
+Headerless_Transposed_ZMM_Grouped_Fang_geno= Transposed_ZMM_Grouped_Fang_geno[-c(1,2,3),]
+
+```
+
+## Join SNP and Genotype Data
+
+```{r}
+Headerless_Transposed_ZMM_Grouped_Fang_geno.df <- as.data.frame(Headerless_Transposed_ZMM_Grouped_Fang_geno)
+
+row_nm_tocol_Headerless= rownames_to_column(Headerless_Transposed_ZMM_Grouped_Fang_geno.df, 'SNP_ID')
+```
+
+
+## Since the SNP ID's were set as a row name, we had to convert it to a column, but to do so we had to make it a data frame
+
+```{r}
+Join_SNP_Geno= right_join(SNP_position,row_nm_tocol_Headerless, by ='SNP_ID')
+```
+
+##Remove columns to ensure SNP_ID", the second column is "Chromosome", the third column is "Position",and subsequent columns are genotype data from either maize or teosinte individuals. Assumption that genotype data means nucleotides only
+
+```{r}
+Cleaned_Join_SNP_Geno = subset(Join_SNP_Geno, select = -c(cdv_marker_id, alt_pos:count_gene))
+
+```
+
+
+## Chromosome Files for Maize in Ascending Order
+###Since these already have ? marks for missing data, we do not have to impute here
+
+```{r}
+
+M1= filter(Cleaned_Join_SNP_Geno, Chromosome == 1) 
+Chr1_Maize_Cleaned_Join_SNP_Geno=M1[with(M1,order(Position)), ]
+M2= filter(Cleaned_Join_SNP_Geno, Chromosome == 2)
+Chr2_Maize_Cleaned_Join_SNP_Geno=M2[with(M2,order(Position)), ]
+M3= filter(Cleaned_Join_SNP_Geno, Chromosome == 3)
+Chr3_Maize_Cleaned_Join_SNP_Geno=M3[with(M3,order(Position)), ]
+M4= filter(Cleaned_Join_SNP_Geno, Chromosome == 4)
+Chr4_Maize_Cleaned_Join_SNP_Geno=M4[with(M4,order(Position)), ]
+M5= filter(Cleaned_Join_SNP_Geno, Chromosome == 5)
+Chr5_Maize_Cleaned_Join_SNP_Geno=M5[with(M5,order(Position)), ]
+M6= filter(Cleaned_Join_SNP_Geno, Chromosome == 6)
+Chr6_Maize_Cleaned_Join_SNP_Geno=M6[with(M6,order(Position)), ]
+M7= filter(Cleaned_Join_SNP_Geno, Chromosome == 7)
+Chr7_Maize_Cleaned_Join_SNP_Geno=M7[with(M7,order(Position)), ]
+M8= filter(Cleaned_Join_SNP_Geno, Chromosome == 8)
+Chr8_Maize_Cleaned_Join_SNP_Geno=M8[with(M8,order(Position)), ]
+M9= filter(Cleaned_Join_SNP_Geno, Chromosome == 9)
+Chr9_Maize_Cleaned_Join_SNP_Geno=M9[with(M9,order(Position)), ]
+M10= filter(Cleaned_Join_SNP_Geno, Chromosome == 10)
+Chr10_Maize_Cleaned_Join_SNP_Geno=M10[with(M10,order(Position)), ]
+
+```
+
+
+ *Teosinte*
+
+## Isolate ZMPBA, ZMPIL,ZMPJA containing Rows and then Transpose Fang_et_al_Genotype
+
+```{r}
+ZMP_Grouped_Fang_geno = filter(Fang_genotypes, grepl("ZMP", Group))
+
+
+Transposed_ZMP_Grouped_Fang_geno= t(ZMP_Grouped_Fang_geno)
+
+```
+
+
+## Remove the three rows of headers in Genotype data except for sample ID
+
+```{r}
+Headerless_Transposed_ZMP_Grouped_Fang_geno= Transposed_ZMP_Grouped_Fang_geno[-c(1,2,3),]
+
+
+```
+##Join SNP and Genotype Data
+
+```{r}
+
+Headerless_Transposed_ZMP_Grouped_Fang_geno.df <- as.data.frame(Headerless_Transposed_ZMP_Grouped_Fang_geno)
+
+row_ZMP_nm_tocol_Headerless= rownames_to_column(Headerless_Transposed_ZMP_Grouped_Fang_geno.df, 'SNP_ID')
+```
+
+
+## Since the SNP ID's were set as a row name, we hd to convert it to a column, but to do so  we had to make it a data frame.
+
+```{r}
+Join_ZMP_SNP_Geno= right_join(SNP_position,row_ZMP_nm_tocol_Headerless, by ='SNP_ID')
+```
+
+##Remove columns to ensure SNP_ID", the second column is "Chromosome", the third column is "Position",and subsequent columns are genotype data from either maize or teosinte individuals. Assumption that genotype data means nucleotides only
+
+```{r}
+Cleaned_ZMP_Join_SNP_Geno = subset(Join_ZMP_SNP_Geno, select = -c(cdv_marker_id, alt_pos:count_gene))
+
+```
+## Chromosome Files for Teosinte
+###Since these already have ? marks for missing data, we do not have to impute here
+
+```{r}
+
+T1= filter(Cleaned_ZMP_Join_SNP_Geno, Chromosome == 1) 
+Chr1_Teosinte_Cleaned_Join_SNP_Geno=T1[with(T1,order(Position)), ]
+T2= filter(Cleaned_ZMP_Join_SNP_Geno, Chromosome == 2)
+Chr2_Teosinte_Cleaned_Join_SNP_Geno=T2[with(T2,order(Position)), ]
+T3= filter(Cleaned_ZMP_Join_SNP_Geno, Chromosome == 3) 
+Chr3_Teosinte_Cleaned_Join_SNP_Geno=T3[with(T3,order(Position)), ]
+T4= filter(Cleaned_ZMP_Join_SNP_Geno, Chromosome == 4)
+Chr4_Teosinte_Cleaned_Join_SNP_Geno=T4[with(T4,order(Position)), ]
+T5= filter(Cleaned_ZMP_Join_SNP_Geno, Chromosome == 5)
+Chr5_Teosinte_Cleaned_Join_SNP_Geno=T5[with(T5,order(Position)), ]
+T6= filter(Cleaned_ZMP_Join_SNP_Geno, Chromosome == 6) 
+Chr6_Teosinte_Cleaned_Join_SNP_Geno=T6[with(T6,order(Position)), ]
+T7= filter(Cleaned_ZMP_Join_SNP_Geno, Chromosome == 7)
+Chr7_Teosinte_Cleaned_Join_SNP_Geno=T7[with(T7,order(Position)), ]
+T8= filter(Cleaned_ZMP_Join_SNP_Geno, Chromosome == 8)
+Chr8_Teosinte_Cleaned_Join_SNP_Geno=T8[with(T8,order(Position)), ]
+T9= filter(Cleaned_ZMP_Join_SNP_Geno, Chromosome == 9)
+Chr9_Teosinte_Cleaned_Join_SNP_Geno=T9[with(T9,order(Position)), ]
+T10= filter(Cleaned_ZMP_Join_SNP_Geno, Chromosome == 10)
+Chr10_Teosinte_Cleaned_Join_SNP_Geno=T10[with(T10,order(Position)), ]
+```
+
+## Replace ? with -
+
+```{r}
+P = as.data.frame(lapply(Cleaned_Join_SNP_Geno, gsub, pattern="?", replacement= "-", fixed= TRUE))
+
+
+R = as.data.frame(lapply(Cleaned_ZMP_Join_SNP_Geno, gsub, pattern="?", replacement= "-", fixed= TRUE))
+
+```
+
+
+#Chromosome Files for Maize- ? swapped for -
+
+```{r}
+DM1= filter(P, Chromosome == 1) 
+Chr1_dash_maize_Cleaned_Join_SNP_Geno=DM1[with(DM1,order(Position,decreasing = TRUE)), ]
+DM2= filter(P, Chromosome == 2)
+Chr2_dash_maize_Cleaned_Join_SNP_Geno=DM2[with(DM2,order(Position,decreasing = TRUE)), ]
+DM3= filter(P, Chromosome == 3)
+Chr3_dash_maize_Cleaned_Join_SNP_Geno=DM3[with(DM3,order(Position,decreasing = TRUE)), ]
+DM4= filter(P, Chromosome == 4)
+Chr4_dash_maize_Cleaned_Join_SNP_Geno=DM4[with(DM4,order(Position,decreasing = TRUE)), ]
+DM5= filter(P, Chromosome == 5)
+Chr5_dash_maize_Cleaned_Join_SNP_Geno=DM5[with(DM5,order(Position,decreasing = TRUE)), ]
+DM6= filter(P, Chromosome == 6)
+Chr6_dash_maize_Cleaned_Join_SNP_Geno=DM6[with(DM6,order(Position,decreasing = TRUE)), ]
+DM7= filter(P, Chromosome == 7)
+Chr7_dash_maize_Cleaned_Join_SNP_Geno=DM7[with(DM7,order(Position,decreasing = TRUE)), ]
+DM8= filter(P, Chromosome == 8)
+Chr8_dash_maize_Cleaned_Join_SNP_Geno=DM8[with(DM8,order(Position,decreasing = TRUE)), ]
+DM9= filter(P, Chromosome == 9)
+Chr9_dash_maize_Cleaned_Join_SNP_Geno=DM9[with(DM9,order(Position,decreasing = TRUE)), ]
+DM10= filter(P, Chromosome == 10)
+Chr10_dash_maize_Cleaned_Join_SNP_Geno=DM10[with(DM10,order(Position,decreasing = TRUE)), ]
+
+```
+
+#Chromosome files for Teosinte- ? swapped for -
+```{r}
+DT1= filter(R, Chromosome == 1) 
+Chr1_dash_Teosinte_Cleaned_Join_SNP_Geno=DT1[with(DT1,order(Position,decreasing = TRUE)), ]
+DT2= filter(R, Chromosome == 2)
+Chr2_dash_Teosinte_Cleaned_Join_SNP_Geno=DT2[with(DT2,order(Position,decreasing = TRUE)), ]
+DT3= filter(R, Chromosome == 3) 
+Chr3_dash_Teosinte_Cleaned_Join_SNP_Geno=DT3[with(DT3,order(Position,decreasing = TRUE)), ]
+DT4= filter(R, Chromosome == 4)
+Chr4_dash_Teosinte_Cleaned_Join_SNP_Geno=DT4[with(DT4,order(Position,decreasing = TRUE)), ]
+DT5= filter(R, Chromosome == 5)
+Chr5_dash_Teosinte_Cleaned_Join_SNP_Geno=DT5[with(DT5,order(Position,decreasing = TRUE)), ]
+DT6= filter(R, Chromosome == 6) 
+Chr6_dash_Teosinte_Cleaned_Join_SNP_Geno=DT6[with(DT6,order(Position,decreasing = TRUE)), ]
+DT7= filter(R, Chromosome == 7)
+Chr7_dash_Teosinte_Cleaned_Join_SNP_Geno=DT7[with(DT7,order(Position,decreasing = TRUE)), ]
+DT8= filter(R, Chromosome == 8)
+Chr8_dash_Teosinte_Cleaned_Join_SNP_Geno=DT8[with(DT8,order(Position,decreasing = TRUE)), ]
+DT9= filter(R, Chromosome == 9)
+Chr9_dash_Teosinte_Cleaned_Join_SNP_Geno=DT9[with(DT9,order(Position,decreasing = TRUE)), ]
+DT10= filter(R, Chromosome == 10)
+Chr10_dash_Teosinte_Cleaned_Join_SNP_Geno=DT10[with(DT10,order(Position,decreasing = TRUE)), ]
+
+```
+
+*Visualization*
+
+##SNP's Per Chromosome Maize
+
+```{r}
+ZMM_SNPS_Per_Chrom <- table(Cleaned_Join_SNP_Geno$Chromosome)
+ZMM_SNPS_Per_Chrom<- melt(ZMM_SNPS_Per_Chrom)
+ggplot(ZMM_SNPS_Per_Chrom, aes(x=as.factor(Var.1), y=value))+ geom_bar(stat='identity')
+```
+
+##SNP's Per Chromosome Teosinte
+
+```{r}
+ZMP_SNPS_Per_Chrom <- table(Cleaned_ZMP_Join_SNP_Geno$Chromosome)
+ZMP_SNPS_Per_Chrom<- melt(ZMP_SNPS_Per_Chrom)
+ggplot(ZMP_SNPS_Per_Chrom, aes(x=as.factor(Var.1), y=value))+ geom_bar(stat='identity')
+### Confirmation that they should have the same number
+```
+
+## Distribution of SNP'S on Chromosomes-Maize
+```{r}
+ggplot(data = Cleaned_Join_SNP_Geno) + geom_point(mapping = aes(x=Position, y=Chromosome))
+```
+
+## Distribution of SNP'S on Chromosomes-Teosinte
+```{r}
+ggplot(data = Cleaned_ZMP_Join_SNP_Geno) + geom_point(mapping = aes(x=Position, y=Chromosome))
+
+```
+
+*Missing data and amount of heterozygosity*
+#Maize
+
+ ### Provides us data on the types of differences present in nucleotide data
+ 
+```{r}
+#Identifying HTZ 
+ Cleaned_Join_SNP_Geno$ZygosityAT <- ifelse(Cleaned_Join_SNP_Geno[c(4:1576)]== "A/T", "HZ", "i")
+ Cleaned_Join_SNP_Geno$ZygosityAG <- ifelse(Cleaned_Join_SNP_Geno[c(4:1576)]== "A/G", "HZ", "i")
+ Cleaned_Join_SNP_Geno$ZygosityAC <- ifelse(Cleaned_Join_SNP_Geno[c(4:1576)]== "A/C", "HZ", "i")
+ Cleaned_Join_SNP_Geno$ZygosityTA <- ifelse(Cleaned_Join_SNP_Geno[c(4:1576)]== "T/A", "HZ", "i")
+ Cleaned_Join_SNP_Geno$ZygosityGA <- ifelse(Cleaned_Join_SNP_Geno[c(4:1576)]== "G/A", "HZ", "i")
+ Cleaned_Join_SNP_Geno$ZygosityCA <- ifelse(Cleaned_Join_SNP_Geno[c(4:1576)]== "C/A", "HZ", "i")
+ Cleaned_Join_SNP_Geno$ZygosityGC <- ifelse(Cleaned_Join_SNP_Geno[c(4:1576)]== "G/C", "HZ", "i")
+ Cleaned_Join_SNP_Geno$ZygosityGT <- ifelse(Cleaned_Join_SNP_Geno[c(4:1576)]== "G/T", "HZ", "i")
+ Cleaned_Join_SNP_Geno$ZygosityCG <- ifelse(Cleaned_Join_SNP_Geno[c(4:1576)]== "C/G", "HZ", "i")
+ Cleaned_Join_SNP_Geno$ZygosityTG <- ifelse(Cleaned_Join_SNP_Geno[c(4:1576)]== "T/G", "HZ", "i")
+ Cleaned_Join_SNP_Geno$ZygosityTC <- ifelse(Cleaned_Join_SNP_Geno[c(4:1576)]== "T/C", "HZ", "i")
+ Cleaned_Join_SNP_Geno$ZygosityCT <- ifelse(Cleaned_Join_SNP_Geno[c(4:1576)]== "C/T", "HZ", "i")
+
+ #Identifying HMZ 
+  Cleaned_Join_SNP_Geno$ZygosityTT <- ifelse(Cleaned_Join_SNP_Geno[c(4:1576)]== "T/T", "HM", "i")
+  Cleaned_Join_SNP_Geno$ZygosityAA <- ifelse(Cleaned_Join_SNP_Geno[c(4:1576)]== "A/A", "HM", "i")
+   Cleaned_Join_SNP_Geno$ZygosityGG <- ifelse(Cleaned_Join_SNP_Geno[c(4:1576)]== "G/G", "HM", "i")
+    Cleaned_Join_SNP_Geno$ZygosityCC <- ifelse(Cleaned_Join_SNP_Geno[c(4:1576)]== "C/C", "HM", "i")
+  
+  #Identifying Missing
+ 
+ Cleaned_Join_SNP_Geno$Zygositymissing1 <- ifelse(Cleaned_Join_SNP_Geno[c(4:1576)]== "?/?",  "Missing", "i")
+ 
+ #Determining the number of occurrences
+ occurrences_MAIZE= table(unlist(Cleaned_Join_SNP_Geno[c(4:1593)]))
+ view(occurrences_MAIZE)
+
+# Maize_occurrences- Make a new data frame for graphing-Data from occurrences_MAIZE
+ MZygosity=c("HZ","HM","Missing")
+ MCount=c(207813,1263501,74945)
+ Maize_Occurrences= data.frame(MZygosity,MCount)
+ 
+```
+ 
+ Maize-HMZ vs.HTZ vs. Missing
+```{r}
+
+ ggplot(data = Cleaned_Join_SNP_Geno) + geom_point(mapping=aes(y=SNP_ID, x="HM"))
+ ggplot(data = Cleaned_Join_SNP_Geno) + geom_point(mapping=aes(y=SNP_ID, x="HZ"))
+  ggplot(Maize_Occurrences, aes(x=MZygosity, y=MCount))+ geom_bar( stat='identity')
+ 
+```
+ 
+ # Teosinte 
+```{r}
+#Identifying HTZ 
+Cleaned_ZMP_Join_SNP_Geno$ZygosityAT <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "A/T", "HZ", "i")
+ Cleaned_ZMP_Join_SNP_Geno$ZygosityAG <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "A/G", "HZ", "i")
+ Cleaned_ZMP_Join_SNP_Geno$ZygosityAC <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "A/C", "HZ", "i")
+ Cleaned_ZMP_Join_SNP_Geno$ZygosityTA <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "T/A", "HZ", "i")
+ Cleaned_ZMP_Join_SNP_Geno$ZygosityGA <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "G/A", "HZ", "i")
+ Cleaned_ZMP_Join_SNP_Geno$ZygosityCA <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "C/A", "HZ", "i")
+ Cleaned_ZMP_Join_SNP_Geno$ZygosityGC <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "G/C", "HZ", "i")
+ Cleaned_ZMP_Join_SNP_Geno$ZygosityGT <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "G/T", "HZ", "i")
+ Cleaned_ZMP_Join_SNP_Geno$ZygosityCG <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "C/G", "HZ", "i")
+ Cleaned_ZMP_Join_SNP_Geno$ZygosityTG <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "T/G", "HZ", "i")
+ Cleaned_ZMP_Join_SNP_Geno$ZygosityTC <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "T/C", "HZ", "i")
+ Cleaned_ZMP_Join_SNP_Geno$ZygosityCT <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "C/T", "HZ", "i")
+ 
+ #Identifying HTZ 
+ Cleaned_ZMP_Join_SNP_Geno$ZygosityTT <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "T/T", "HM", "i")
+ Cleaned_ZMP_Join_SNP_Geno$ZygosityAA <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "A/A", "HM", "i")
+ Cleaned_ZMP_Join_SNP_Geno$ZygosityGG <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "G/G", "HM", "i")
+ Cleaned_ZMP_Join_SNP_Geno$ZygosityCC <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "C/C", "HM", "i")
+ #Identifying Missing data
+ 
+ Cleaned_ZMP_Join_SNP_Geno$Zygositymissing1 <- ifelse(Cleaned_ZMP_Join_SNP_Geno[c(4:978)]== "?/*", "Missing","i")
+
+ 
+ #Count total occurrences of "HM" and "HZ" in the data file
+ 
+ occurrences_Teosinte= table(unlist(Cleaned_ZMP_Join_SNP_Geno[c(4:995)]))
+ view(occurrences_Teosinte)
+ 
+
+ # Teosinte occurrences- Make a new data frame for graphing-Data from occurrences_Teosinte
+ TZygosity=c("HZ","HM","Missing")
+ TCount=c(202086,713892,42447)
+ Teosinte_Occurrences= data.frame(TZygosity,TCount)
+ 
+```
+ 
+  Teosinte-HMZ vs.HTZ vs. Missing
+ 
+```{r}
+ ggplot(data = Cleaned_ZMP_Join_SNP_Geno) + geom_point(mapping=aes(y=SNP_ID, x="HM"))
+ ggplot(data = Cleaned_ZMP_Join_SNP_Geno) + geom_point(mapping=aes(y=SNP_ID, x="HZ"))
+ 
+ ggplot(Teosinte_Occurrences, aes(x=TZygosity, y=TCount))+ geom_bar(stat='identity')
+```
+ 
+  *My own Visualization*
+
+
+```{r}
+### Amplicons per chromosome-Maize
+barplot(tapply(Join_SNP_Geno$count_amplicons, format(Join_SNP_Geno$Chromosome), FUN=sum))
+
+### Amplicons per chromosome-Teosinte
+
+barplot(tapply(Join_ZMP_SNP_Geno$count_amplicons, format(Join_SNP_Geno$Chromosome), FUN=sum))
+
+```
+*REVISED TO CSV FILES FOR EASIER READING*
+
+# Create Files
+
+```{r}
+write.csv(Chr1_Maize_Cleaned_Join_SNP_Geno, "Chr1_Maize.csv")
+write.csv(Chr2_Maize_Cleaned_Join_SNP_Geno, "Chr2_Maize.csv")
+write.csv(Chr3_Maize_Cleaned_Join_SNP_Geno, "Chr3_Maize.csv")
+write.csv(Chr4_Maize_Cleaned_Join_SNP_Geno, "Chr4_Maize.csv")
+write.csv(Chr5_Maize_Cleaned_Join_SNP_Geno, "Chr5_Maize.csv")
+write.csv(Chr6_Maize_Cleaned_Join_SNP_Geno, "Chr6_Maize.csv")
+write.csv(Chr7_Maize_Cleaned_Join_SNP_Geno, "Chr7_Maize.csv")
+write.csv(Chr8_Maize_Cleaned_Join_SNP_Geno, "Chr8_Maize.csv")
+write.csv(Chr9_Maize_Cleaned_Join_SNP_Geno, "Chr9_Maize.csv")
+write.csv(Chr10_Maize_Cleaned_Join_SNP_Geno, "Chr10_Maize.csv")
+write.csv(Chr1_Teosinte_Cleaned_Join_SNP_Geno, "Chr1_Teosinte.csv")
+write.csv(Chr2_Teosinte_Cleaned_Join_SNP_Geno, "Chr2_Teosinte.csv")
+write.csv(Chr3_Teosinte_Cleaned_Join_SNP_Geno, "Chr3_Teosinte.csv")
+write.csv(Chr4_Teosinte_Cleaned_Join_SNP_Geno, "Chr4_Teosinte.csv")
+write.csv(Chr5_Teosinte_Cleaned_Join_SNP_Geno, "Chr5_Teosinte.csv")
+write.csv(Chr6_Teosinte_Cleaned_Join_SNP_Geno, "Chr6_Teosinte.csv")
+write.csv(Chr7_Teosinte_Cleaned_Join_SNP_Geno, "Chr7_Teosinte.csv")
+write.csv(Chr8_Teosinte_Cleaned_Join_SNP_Geno, "Chr8_Teosinte.csv")
+write.csv(Chr9_Teosinte_Cleaned_Join_SNP_Geno, "Chr9_Teosinte.csv")
+write.csv(Chr10_Teosinte_Cleaned_Join_SNP_Geno, "Chr10_Teosinte.csv")
+write.csv(Chr1_dash_maize_Cleaned_Join_SNP_Geno, "Chr1_dash_Maize.csv")
+write.csv(Chr2_dash_maize_Cleaned_Join_SNP_Geno, "Chr2_dash_Maize.csv")
+write.csv(Chr3_dash_maize_Cleaned_Join_SNP_Geno, "Chr3_dash_Maize.csv")
+write.csv(Chr4_dash_maize_Cleaned_Join_SNP_Geno, "Chr4_dash_Maize.csv")
+write.csv(Chr5_dash_maize_Cleaned_Join_SNP_Geno, "Chr5_dash_Maize.csv")
+write.csv(Chr6_dash_maize_Cleaned_Join_SNP_Geno, "Chr6_dash_Maize.csv")
+write.csv(Chr7_dash_maize_Cleaned_Join_SNP_Geno, "Chr7_dash_Maize.csv")
+write.csv(Chr8_dash_maize_Cleaned_Join_SNP_Geno, "Chr8_dash_Maize.csv")
+write.csv(Chr9_dash_maize_Cleaned_Join_SNP_Geno, "Chr9_dash_Maize.csv")
+write.csv(Chr10_dash_maize_Cleaned_Join_SNP_Geno, "Chr10_dash_Maize.csv")
+write.csv(Chr1_dash_Teosinte_Cleaned_Join_SNP_Geno, "Chr1_dash_Teosinte.csv")
+write.csv(Chr2_dash_Teosinte_Cleaned_Join_SNP_Geno, "Chr2_dash_Teosinte.csv")
+write.csv(Chr3_dash_Teosinte_Cleaned_Join_SNP_Geno, "Chr3_dash_Teosinte.csv")
+write.csv(Chr4_dash_Teosinte_Cleaned_Join_SNP_Geno, "Chr4_dash_Teosinte.csv")
+write.csv(Chr5_dash_Teosinte_Cleaned_Join_SNP_Geno, "Chr5_dash_Teosinte.csv")
+write.csv(Chr6_dash_Teosinte_Cleaned_Join_SNP_Geno, "Chr6_dash_Teosinte.csv")
+write.csv(Chr7_dash_Teosinte_Cleaned_Join_SNP_Geno, "Chr7_dash_Teosinte.csv")
+write.csv(Chr8_dash_Teosinte_Cleaned_Join_SNP_Geno, "Chr8_dash_Teosinte.csv")
+write.csv(Chr9_dash_Teosinte_Cleaned_Join_SNP_Geno, "Chr9_dash_Teosinte.csv")
+write.csv(Chr10_dash_Teosinte_Cleaned_Join_SNP_Geno, "Chr10_dash_Teosinte.csv")
+
+
+```
+
