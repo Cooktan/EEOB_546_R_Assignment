@@ -5,10 +5,10 @@ This was updated to direct the reader in a more detailed fashion. (updated 3-23-
 
 For the original copy sent to reviewers, it was better to run the code with the .R file as the markdown was not well put together. After more online searching I was able to get a better handle on R-Markdown. The revised version of the document which was updated after being sent to the reviewers is titled, "Revised_EEOB 546 R_Assignment.Rmd". This document has updates including: 
 
-removed "view" commands to clear up RAM when running code
-ordering chromosome files in ascending and descending order
-recounting "HM" and "HZ" occurrences and missing data accompanied also with shiny new graphs
-writing chromosome files to .CSV files instead of .TSV files.
+* removed "view" commands to clear up RAM when running code
+* ordering chromosome files in ascending and descending order
+* recounting "HM" and "HZ" occurrences and missing data accompanied also with shiny new graphs
+* writing chromosome files to .CSV files instead of .TSV files.
 
 Some last minute updates to reviewers sent at 00:03 3-20-2021 include: Chromosome file creation and placing into individual "Maize" and "Teosinte" files, Minor section title updates, and a space added in a code section.
 
